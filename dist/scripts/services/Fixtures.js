@@ -1,7 +1,7 @@
 (function() {
   function Fixtures() {
     var Fixtures = {};
-    
+
     var albumPicasso = {
       title: 'The Colors',
       artist: 'Pablo Picasso',
@@ -36,9 +36,18 @@
       return albumPicasso;
     }
 
+    Fixtures.getCollection= function(numberOfAlbums) {
+      albumArray = [];
+      for(var i = 0; i < numberOfAlbums; i++) {
+        albumArray.push(albumPicasso);
+      }
+
+      return albumArray;
+    }
+
     return Fixtures;
   }
-  
+
   angular
     .module('blocJams')
     .factory('Fixtures', Fixtures);
