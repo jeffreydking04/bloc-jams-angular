@@ -26,13 +26,15 @@
 
     /**
     * @function setSong
-    * @desc Stops currently playing song and loads new audio file as currentBuzzObject
+    * @desc Stops currently playing song and loads new audio file as
+    * currentBuzzObject, assigns the currentSong variable,
+    * and assigns the title, song, and total time variables for use
+    * in the view
     * @param [Object] song
     */
     var setSong = function(song) {
       if(currentBuzzObject) {
-        currentBuzzObject.stop();
-        SongPlayer.currentSong.playing = null;
+        stopSong();
       }
 
       currentBuzzObject = new buzz.sound(song.audioUrl, {
@@ -41,6 +43,9 @@
       });
 
       SongPlayer.currentSong = song;
+      SongPlayer.currentSongTitle = currentAlbum.songs[getSongIndex(song)].title;
+      SongPlayer.currentSongArtist = currentAlbum.artist;
+      SongPlayer.currentSongTotalTime = currentAlbum.songs[getSongIndex(song)].duration;
     };
 
     /**
@@ -53,10 +58,39 @@
     };
 
     /**
+    * @function stopSong
+    * @desc stops current buzz song and sets the currentSong.playing
+    * attribute to be null
+    * no @param passed
+    */
+    var stopSong = function() {
+      currentBuzzObject.stop();
+      SongPlayer.currentSong.playing = null;
+    };
+
+    /**
     * @desc variable that stores the currently selected song
     * @type {object}
     */
     SongPlayer.currentSong = null;
+
+    /**
+    * @desc variable that stores the currently selected song title
+    * @type {int}
+    */
+    SongPlayer.currentSongTitle = null;
+
+    /**
+    * @desc variable that stores the currently selected song title
+    * @type {int}
+    */
+    SongPlayer.currentSongArtist = null;
+
+    /**
+    * @desc variable that stores the currently selected song total
+    * @type {int}
+    */
+    SongPlayer.currentSongTotalTime = null;
 
     /**
     * @function SongPlayer.play
@@ -89,7 +123,8 @@
 
     /**
     * @function SongPlayer.previous
-    * @desc determines previous song and plays it
+    * @desc determines previous song and plays it, stops playing if current
+    * song is first
     * no @param passed
     */
     SongPlayer.previous = function() {
@@ -97,8 +132,26 @@
       currentSongIndex--;
 
       if(currentSongIndex < 0) {
-        currentBuzzObject.stop();
-        SongPlayer.currentSong.playing = null;
+        stopSong();
+      } else {
+        var song = currentAlbum.songs[currentSongIndex];
+        setSong(song);
+        playSong(song);
+      }
+    };
+
+    /**
+    * @function SongPlayer.next
+    * @desc determines next song and plays it, stops playing if current
+    * song is last and sets current song to first
+    * no @param passed
+    */
+    SongPlayer.next = function() {
+      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      currentSongIndex++;
+
+      if(currentSongIndex === currentAlbum.songs.length) {
+        setSong(currentAlbum.songs[0]);
       } else {
         var song = currentAlbum.songs[currentSongIndex];
         setSong(song);
