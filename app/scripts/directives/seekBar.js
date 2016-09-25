@@ -4,8 +4,8 @@
       var offsetX = event.pageX - seekBar.offset().left;
       var seekBarWidth = seekBar.width();
       var offsetXPercent = offsetX / seekBarWidth;
-      offsetXpercent = Math.max(0, offsetXPercent);
-      offsetXpercent = Math.min(1, offsetXPercent);
+      offsetXPercent = Math.max(0, offsetXPercent);
+      offsetXPercent = Math.min(1, offsetXPercent);
       return offsetXPercent;
     };
 
@@ -29,6 +29,10 @@
 
         scope.fillStyle = function() {
           return {width: percentString()};
+        };
+
+        scope.thumbStyle = function() {
+          return {left: percentString()};
         };
 
         scope.onClickSeekBar = function(event) {
