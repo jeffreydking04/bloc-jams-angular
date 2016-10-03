@@ -86,6 +86,12 @@
     */
     SongPlayer.currentTime = null;
 
+        /**
+    * @desc Current volume setting
+    * @type {number}
+    */
+    SongPlayer.volume = 25;
+
     /**
     * @desc variable that stores the currently selected song title
     * @type {int}
@@ -179,6 +185,18 @@
     SongPlayer.setCurrentTime = function(time) {
       if(currentBuzzObject) {
         currentBuzzObject.setTime(time);
+      }
+    };
+
+        /**
+    * @function SongPlayer.setVolume
+    * @desc Sets volume of player
+    * @param {Number} time
+    */
+    SongPlayer.setVolume = function(level) {
+      if(currentBuzzObject) {
+        currentBuzzObject.setVolume(level);
+        SongPlayer.volume = level;
       }
     };
 
